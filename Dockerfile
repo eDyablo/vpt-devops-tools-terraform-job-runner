@@ -25,4 +25,11 @@ RUN \
     && unzip -q /tmp/terraform.zip terraform -d /usr/local/bin \
     && rm /tmp/terraform.zip
 
+ARG CONTAINER_USER=default
+
+RUN addgroup -S ${CONTAINER_USER#*:} \
+  && adduser -S ${CONTAINER_USER%:*} -G ${CONTAINER_USER#*:}
+
+USER $CONTAINER_USER
+
 WORKDIR /var/workspace
